@@ -1,0 +1,8 @@
+hypersites_stock:
+    resource: "@HypersitesStockBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
