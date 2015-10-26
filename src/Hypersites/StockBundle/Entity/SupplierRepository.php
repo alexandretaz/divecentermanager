@@ -10,4 +10,5 @@ namespace Hypersites\StockBundle\Entity;
  */
 class SupplierRepository extends \Doctrine\ORM\EntityRepository
 {
+    
 }

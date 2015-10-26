@@ -87,7 +87,7 @@ class Supplier
         $this->products = new \Doctrine\Common\Collections\ArrayCollection();
         $this->brands = new \Doctrine\Common\Collections\ArrayCollection();
         $this->products = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->createdAt = new DateTime();
+        $this->createdAt = new \DateTime();
         
     }
 

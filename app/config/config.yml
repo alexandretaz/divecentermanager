@@ -35,6 +35,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form:
+        resources: ['bootstrap_3_layout.html.twig']
 
 # Assetic Configuration
 assetic:
@@ -52,7 +54,7 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   pdo_sqlite
+        driver:   pdo_mysql
         host:     "%database_host%"
         port:     "%database_port%"
         dbname:   "%database_name%"

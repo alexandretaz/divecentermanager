@@ -1,0 +1,26 @@
+{
+  "name": "stock",
+  "homepage": "https://github.com/alexandretaz/divecentermanager",
+  "description": "",
+  "main": "",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "authors": [
+    "Alexandretaz"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/assets/vendor/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4"
+  }
+}

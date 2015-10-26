@@ -15,11 +15,32 @@ class SupplierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('alias')
-            ->add('fiscalDocument')
-            ->add('orderEmail')
-            ->add('description')
+            ->add('name', 'text', array(
+                    'required'=> true,
+                    'label'=>"Supplier's Name:",
+                    "attr"=>array(
+                        'placeholder'=> "Type Real Name or Company Name"
+                        )
+                    )
+                )
+            ->add('alias', 'text',array(
+                        'required'=>false,
+                        'label' => "Supplier's Alias:"
+                    )
+                )
+            ->add('fiscalDocument', 'text', array(
+                        'label' => "Fiscal Document:"
+                    )
+                )
+            ->add('orderEmail', 'email', array(
+                        'required'=>false,
+                        'label' => "Email to send orders:"
+                    ))
+            ->add('description', 'textarea', array(
+                'required' => false,
+                'label' => "Suppliers Description",
+                'empty_data' => null,
+            ))
         ;
     }
     
@@ -29,7 +50,8 @@ class SupplierType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Hypersites\StockBundle\Entity\Supplier'
+            'data_class' => 'Hypersites\StockBundle\Entity\Supplier',
+            'class' => 'form-inline',
         ));
     }
 

@@ -27,9 +27,8 @@ class SupplierController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('HypersitesStockBundle:Supplier')->findAll();
+        $em = $this->container->get('hypersites.EntityManagerService');
+        $entities = \Hypersites\StockBundle\Model\Supplier::getFullList($em);
 
         return array(
             'entities' => $entities,
@@ -76,7 +75,8 @@ class SupplierController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Create New Supplier', 'attr'=>array(
+            'class'=>'btn btn-primary btn-lg')));
 
         return $form;
     }
@@ -165,7 +165,8 @@ class SupplierController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Update This Supplier Info',
+            'attr'=>array('class'=>'btn btn-lg btn-primary')));
 
         return $form;
     }
