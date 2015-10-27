@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Hypersites\StockBundle\Entity\Supplier;
 use Hypersites\StockBundle\Form\SupplierType;
+use Hypersites\StockBundle\Model\Supplier as SupplierModel;
 
 /**
  * Supplier controller.
@@ -17,7 +18,7 @@ use Hypersites\StockBundle\Form\SupplierType;
  */
 class SupplierController extends Controller
 {
-
+    
     /**
      * Lists all Supplier entities.
      *
@@ -28,7 +29,9 @@ class SupplierController extends Controller
     public function indexAction()
     {
         $em = $this->container->get('hypersites.EntityManagerService');
-        $entities = \Hypersites\StockBundle\Model\Supplier::getFullList($em);
+        $entities = SupplierModel::getFullList($em,
+                array('id', 'name', 'alias', 'orderEmail', 'fiscalDocument' )
+            );
 
         return array(
             'entities' => $entities,
@@ -48,9 +51,7 @@ class SupplierController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
+            
 
             return $this->redirect($this->generateUrl('stock_supplier_show', array('id' => $entity->getId())));
         }

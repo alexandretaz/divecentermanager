@@ -1,6 +1,7 @@
 <?php
 
 namespace Hypersites\StockBundle\Entity;
+use Hypersites\StockBundle\Entity\Supplier as SupplierEntity;
 
 /**
  * SupplierRepository
@@ -10,5 +11,26 @@ namespace Hypersites\StockBundle\Entity;
  */
 class SupplierRepository extends \Doctrine\ORM\EntityRepository
 {
+    const TABLE_ALIAS = "s";
     
+    const TABLE_ENTITY = "\\Hypersites\\StockBundle\\Entity\\Supplier";
+    
+    public function getList ( array $fields = array() ) 
+    {
+        $fields = $this->makeFields($fields);
+        $dql = "Select {$fields} from ".
+                self::TABLE_ENTITY.
+                " ".self::TABLE_ALIAS." ";
+        return $this->_em->createQuery($dql)->getResult();
+    }
+    
+    private function makeFields( array $fields = array() )
+    {
+        $strField = self::TABLE_ALIAS;
+        if (!empty($fields)) {
+            $strField = self::TABLE_ALIAS.".".implode(",".self::TABLE_ALIAS.".", $fields);
+        }
+        return $strField;
+        
+    }
 }

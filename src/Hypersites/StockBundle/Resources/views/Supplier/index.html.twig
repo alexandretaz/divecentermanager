@@ -3,17 +3,14 @@
 {% block body -%}
     <h1>Supplier list</h1>
 
-    <table class="records_list">
+    <table class="records_list table table-condensed table-striped">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
                 <th>Alias</th>
-                <th>Fiscaldocument</th>
-                <th>Orderemail</th>
-                <th>Description</th>
-                <th>Createdat</th>
-                <th>Updatedat</th>
+                <th>Fiscal Document</th>
+                <th>Order Email</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -23,18 +20,25 @@
                 <td><a href="{{ path('stock_supplier_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.name }}</td>
                 <td>{{ entity.alias }}</td>
-                <td>{{ entity.fiscalDocument }}</td>
+                <td>
+                    {% if entity.fiscalDocument|length == 11 %}
+                        {{ entity.fiscalDocument[0:3] }}.{{ entity.fiscalDocument[3:3] }}.{{ entity.fiscalDocument[6:3] }}-{{ entity.fiscalDocument[9:2] }}
+                    {% else %}
+                        {{ entity.fiscalDocument[0:2] }}.{{ entity.fiscalDocument[2:3] }}.{{ entity.fiscalDocument[5:3] }}/{{ entity.fiscalDocument[8:4] }}-{{ entity.fiscalDocument[12:2] }}
+                    {% endif %}
+                    
+                </td>
                 <td>{{ entity.orderEmail }}</td>
-                <td>{{ entity.description }}</td>
-                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('stock_supplier_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('stock_supplier_show', { 'id': entity.id }) }}" class="glyphicon glyphicon-eye-open">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('stock_supplier_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('stock_supplier_edit', { 'id': entity.id }) }}" class="glyphicon glyphicon-pencil">edit</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('stock_supplier_delete', { 'id': entity.id }) }}" class="glyphicon glyphicon-trash">delete</a>
                     </li>
                 </ul>
                 </td>
@@ -42,12 +46,7 @@
         {% endfor %}
         </tbody>
     </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('stock_supplier_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
+        <a href="{{ path('stock_supplier_new') }}">        
+            <button type="submit" class="btn btn-lg btn-primary"> Create a new Supplier</button>
+        </a>
     {% endblock %}
