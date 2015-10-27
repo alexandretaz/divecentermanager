@@ -165,18 +165,35 @@ class ProductController extends Controller
     public function createVariationAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('HypersitesStockBundle:Product')->find($id);
-        $attributes = [];
-        foreach($entity->getAttributes() as $attribute) {
+        $attributes = $entity->getAttributes();
+        $variationsToProcess = [];
+        foreach( $attributes as $attribute) {
+            $key = 0;
             foreach($attribute->getAttributeValue() as $value) {
-                $variationAttr = new \Hypersites\StockBundle\Entity\VariationAttributes();
-                $variationAttr->setProductAttribute($attribute);
-                $variationAttr->setAttributeValue($value);
+                if(!isset($variationsToProcess[$key])){
+                    $variationAttr = new \Hypersites\StockBundle\Entity\VariationAttributes();
+                    $variation = new \Hypersites\StockBundle\Entity\ProductVariation();
+                    $variation->setProduct($entity);
+                    $variation->setMinCost($entity->getMinCost());
+                    $variation->setMaxCost($entity->getMaxCost());
+                    $variationAttr->setProductAttribute($attribute);
+                    $variationAttr->setAttributeValue($value);
+                    $variationsToProcess[$key++] = $variation->addVariationAttributes($variationAttr);
+                    $variationAttr->addProductVariation($variation);
+                    
+                }
+                else {
+                    $variationsToProcess[$key++]->addVariationAttributes($variationAttr);
+                    $variationAttr->addProductVariation($variation);
+                }
                 $em->persist($variationAttr);
+                $em->persist($variation);
             }
             
         }
         $em->flush();
-        $variations = $em->getRepository('HypersitesStockBundle:VariationAttributes')->getPossibleVariations($id);
+        die();
+        
         return $this->redirect($this->generateUrl('stock_product_show', array('id' => $id)));
         
     }
@@ -278,4 +295,6 @@ class ProductController extends Controller
             ->getForm()
         ;
     }
+    
+   
 }

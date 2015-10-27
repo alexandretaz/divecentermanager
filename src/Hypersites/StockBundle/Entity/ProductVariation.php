@@ -67,6 +67,7 @@ class ProductVariation
     public function __construct() {
         $this->variationAttributes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->items = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->qtyStock = 0;
     }
 
 
@@ -178,6 +179,11 @@ class ProductVariation
     
     public function getVariationAttributes() {
         return $this->variationAttributes;
+    }
+    
+    public function addVariationAttributes(VariationAttributes $attribute) {
+        $this->variationAttributes->add($attribute);
+        return $this;
     }
 
 

@@ -15,7 +15,9 @@ class VariationAttributesRepository extends \Doctrine\ORM\EntityRepository
     public function getPossibleVariationsForProduct(Product $product) 
     {
         $attributes = $product->getAttributes();
-        $variationAttributes = $attributes->getVariationAttributes();
+        
+        
+        
         
         $this->createQueryBuilder($alias);
     }

@@ -113,6 +113,11 @@ class VariationAttributes
     public function getProductVariations() {
         return $this->productVariations;
     }
+    
+    public function addProductVariation(ProductVariation $productVariation) {
+        $this->productVariations->add($productVariation);
+        return $this;
+    }
 
 
 }
