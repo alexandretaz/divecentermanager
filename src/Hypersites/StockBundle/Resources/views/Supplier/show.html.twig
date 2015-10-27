@@ -39,18 +39,37 @@
             </tr>
         </tbody>
     </table>
+    <div>
+        <h2>Brand's Supplied by this Supplier</h2>
+        <table class="supplier_brands">
+            <thead>
+            <th> Brand </th>
+            <th> Logo </th>
+            <th> Site </th>
+            </thead>
+            <tbody>
+                {% for brand in entity.brands %}
+                    <tr>
+                        <td>{{brand.name}}</td>
+                        <td>{{brand.logo}}</td>
+                        <td>{{brand.site}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('stock_supplier') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('stock_supplier_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('stock_supplier') }}">
+                Back to the list
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('stock_supplier_edit', { 'id': entity.id }) }}">
+                Edit
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+    </ul>
 {% endblock %}

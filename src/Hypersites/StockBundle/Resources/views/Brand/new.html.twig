@@ -1,0 +1,16 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Brand creation</h1>
+    {{ form_start(form) }}
+    {{ form(form) }}
+    {{ form_end(form) }}
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('stock_brand') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}

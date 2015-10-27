@@ -2,7 +2,6 @@
 namespace Hypersites\StockBundle\Model;
 use Hypersites\StockBundle\Entity\Supplier as SupplierEntity;
 use Hypersites\StockBundle\Entity\SupplierRepository; 
-use Hypersites\StockBundle\Entity\Supplier as SupplierEntity;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -29,8 +28,7 @@ class Supplier extends StockModel {
         return $entities;
     }
     
-    public function create($entity) {
-            
+    public function save($entity) {
             $this->em->persist($entity);
             $this->em->flush();
     }
@@ -39,14 +37,22 @@ class Supplier extends StockModel {
      * Static Methods
      */
     
+    /**
+     * 
+     * @param type $em
+     * @param array $fields
+     * @return type
+     */
     public static function getFullList($em, array $fields = array()) {
         $_instance = new self($em);
         return $_instance->getList(array(), $fields);
     }
     
-    public static function getPartial($em) {
+    public static function process($em, $entity) {
         $_instance = new self($em);
-        
+        return $_instance->save($entity);
     }
+    
+    
     
 }

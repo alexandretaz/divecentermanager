@@ -324,5 +324,12 @@ class Supplier
         $this->products = $products;
         return $this;
     }
+    /**
+     * 
+     * @return string
+     */
+    public function __toString() {
+        return $this->alias."({$this->name})";
+    }
 }
 

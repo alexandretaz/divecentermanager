@@ -7,52 +7,57 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Hypersites\StockBundle\Entity\Supplier;
-use Hypersites\StockBundle\Form\SupplierType;
-use Hypersites\StockBundle\Model\Supplier as SupplierModel;
+use Hypersites\StockBundle\Entity\Brand;
+use Hypersites\StockBundle\Form\BrandType;
 
 /**
- * Supplier controller.
+ * Brand controller.
  *
- * @Route("/stock/supplier")
+ * @Route("/stock/brand")
  */
-class SupplierController extends Controller
+class BrandController extends Controller
 {
-    
+
     /**
-     * Lists all Supplier entities.
+     * Lists all Brand entities.
      *
-     * @Route("/", name="stock_supplier")
+     * @Route("/", name="stock_brand")
      * @Method("GET")
      * @Template()
      */
     public function indexAction()
     {
-        $em = $this->container->get('hypersites.EntityManagerService');
-        $entities = SupplierModel::getFullList($em,
-                array('id', 'name', 'alias', 'orderEmail', 'fiscalDocument' )
-            );
+        $em = $this->getDoctrine()->getManager();
+
+        $entities = $em->getRepository('HypersitesStockBundle:Brand')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new Supplier entity.
+     * Creates a new Brand entity.
      *
-     * @Route("/", name="stock_supplier_create")
+     * @Route("/", name="stock_brand_create")
      * @Method("POST")
-     * @Template("HypersitesStockBundle:Supplier:new.html.twig")
+     * @Template("HypersitesStockBundle:Brand:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Supplier();
+        $entity = new Brand();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {        
-            SupplierModel::process($this->container->get('hypersites.EntityManagerService'), $entity);
-            return $this->redirect($this->generateUrl('stock_supplier_show', array('id' => $entity->getId())));
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            foreach($entity->getSuppliers() as $supplier) {
+                $supplier->addBrand($entity);
+                $em->persist($supplier);
+            } 
+           $em->persist($entity); 
+           $em->flush();
+
+            return $this->redirect($this->generateUrl('stock_brand_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -62,35 +67,34 @@ class SupplierController extends Controller
     }
 
     /**
-     * Creates a form to create a Supplier entity.
+     * Creates a form to create a Brand entity.
      *
-     * @param Supplier $entity The entity
+     * @param Brand $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Supplier $entity)
+    private function createCreateForm(Brand $entity)
     {
-        $form = $this->createForm(new SupplierType(), $entity, array(
-            'action' => $this->generateUrl('stock_supplier_create'),
+        $form = $this->createForm(new BrandType(), $entity, array(
+            'action' => $this->generateUrl('stock_brand_create'),
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create New Supplier', 'attr'=>array(
-            'class'=>'btn btn-primary btn-lg')));
+        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
 
     /**
-     * Displays a form to create a new Supplier entity.
+     * Displays a form to create a new Brand entity.
      *
-     * @Route("/new", name="stock_supplier_new")
+     * @Route("/new", name="stock_brand_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Supplier();
+        $entity = new Brand();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -100,9 +104,9 @@ class SupplierController extends Controller
     }
 
     /**
-     * Finds and displays a Supplier entity.
+     * Finds and displays a Brand entity.
      *
-     * @Route("/{id}", name="stock_supplier_show")
+     * @Route("/{id}", name="stock_brand_show")
      * @Method("GET")
      * @Template()
      */
@@ -110,10 +114,10 @@ class SupplierController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HypersitesStockBundle:Supplier')->find($id);
+        $entity = $em->getRepository('HypersitesStockBundle:Brand')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Supplier entity.');
+            throw $this->createNotFoundException('Unable to find Brand entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -125,9 +129,9 @@ class SupplierController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing Supplier entity.
+     * Displays a form to edit an existing Brand entity.
      *
-     * @Route("/{id}/edit", name="stock_supplier_edit")
+     * @Route("/{id}/edit", name="stock_brand_edit")
      * @Method("GET")
      * @Template()
      */
@@ -135,10 +139,10 @@ class SupplierController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HypersitesStockBundle:Supplier')->find($id);
+        $entity = $em->getRepository('HypersitesStockBundle:Brand')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Supplier entity.');
+            throw $this->createNotFoundException('Unable to find Brand entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -152,39 +156,38 @@ class SupplierController extends Controller
     }
 
     /**
-    * Creates a form to edit a Supplier entity.
+    * Creates a form to edit a Brand entity.
     *
-    * @param Supplier $entity The entity
+    * @param Brand $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(Supplier $entity)
+    private function createEditForm(Brand $entity)
     {
-        $form = $this->createForm(new SupplierType(), $entity, array(
-            'action' => $this->generateUrl('stock_supplier_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new BrandType(), $entity, array(
+            'action' => $this->generateUrl('stock_brand_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update This Supplier Info',
-            'attr'=>array('class'=>'btn btn-lg btn-primary')));
+        $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
     /**
-     * Edits an existing Supplier entity.
+     * Edits an existing Brand entity.
      *
-     * @Route("/{id}", name="stock_supplier_update")
+     * @Route("/{id}", name="stock_brand_update")
      * @Method("PUT")
-     * @Template("HypersitesStockBundle:Supplier:edit.html.twig")
+     * @Template("HypersitesStockBundle:Brand:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('HypersitesStockBundle:Supplier')->find($id);
+        $entity = $em->getRepository('HypersitesStockBundle:Brand')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Supplier entity.');
+            throw $this->createNotFoundException('Unable to find Brand entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -194,7 +197,7 @@ class SupplierController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('stock_supplier_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('stock_brand_edit', array('id' => $id)));
         }
 
         return array(
@@ -204,9 +207,9 @@ class SupplierController extends Controller
         );
     }
     /**
-     * Deletes a Supplier entity.
+     * Deletes a Brand entity.
      *
-     * @Route("/{id}", name="stock_supplier_delete")
+     * @Route("/{id}", name="stock_brand_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -216,21 +219,21 @@ class SupplierController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('HypersitesStockBundle:Supplier')->find($id);
+            $entity = $em->getRepository('HypersitesStockBundle:Brand')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Supplier entity.');
+                throw $this->createNotFoundException('Unable to find Brand entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('stock_supplier'));
+        return $this->redirect($this->generateUrl('stock_brand'));
     }
 
     /**
-     * Creates a form to delete a Supplier entity by id.
+     * Creates a form to delete a Brand entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -239,7 +242,7 @@ class SupplierController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('stock_supplier_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('stock_brand_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()
