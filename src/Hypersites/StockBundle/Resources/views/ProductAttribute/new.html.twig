@@ -1,11 +1,13 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Brand creation</h1>
-    {{ form(form, {"attr":{"class":"form-horizontal"}}) }}
+    <h1>ProductAttribute creation</h1>
+
+    {{ form(form) }}
+
         <ul class="record_actions">
     <li>
-        <a href="{{ path('stock_brand') }}">
+        <a href="{{ path('supplier_product_attribute', { 'product': product.id }) }}">
             Back to the list
         </a>
     </li>

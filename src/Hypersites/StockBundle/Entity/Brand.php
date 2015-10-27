@@ -165,6 +165,14 @@ class Brand
     public function getProducts() {
         return $this->products();
     }
+    
+    /**
+     * 
+     * @return string
+     */
+    public function __toString() {
+        return $this->name;
+    }
 
 
 }

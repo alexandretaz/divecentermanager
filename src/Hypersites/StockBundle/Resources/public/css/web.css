@@ -18,7 +18,7 @@ div.form-group>label {
 }
 div.form-group>button {
     margin-right: 5px;
-    margin-left: 5px;
+    margin-left: 10px;
     margin-bottom: 5px;
 }
 div.form-group>input,textarea {
@@ -27,6 +27,9 @@ div.form-group>input,textarea {
     margin-bottom: 5px;
     width:90%;
     max-width: 90%;
+}
+.checkbox {
+    margin-left: 10px;
 }
 div.form-group {
     margin-bottom: 5px;

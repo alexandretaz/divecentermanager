@@ -1,13 +1,16 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Brand creation</h1>
-    {{ form(form, {"attr":{"class":"form-horizontal"}}) }}
+    <h1>Product edit</h1>
+
+    {{ form(edit_form) }}
+
         <ul class="record_actions">
     <li>
-        <a href="{{ path('stock_brand') }}">
+        <a href="{{ path('stock_product') }}">
             Back to the list
         </a>
     </li>
+    <li>{{ form(delete_form) }}</li>
 </ul>
 {% endblock %}

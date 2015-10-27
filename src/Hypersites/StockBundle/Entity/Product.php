@@ -326,6 +326,10 @@ class Product
     public function getVariations() {
         return $this->variations;
     }
+    
+    public function __toString() {
+        return $this->name;
+    }
 
 }
 

@@ -80,7 +80,8 @@ class BrandController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Create New Brand','attr'=>array(
+            'class'=>'btn btn-primary btn-lg')));
 
         return $form;
     }
