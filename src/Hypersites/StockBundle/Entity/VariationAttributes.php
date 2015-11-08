@@ -65,7 +65,7 @@ class VariationAttributes
      *
      * @return VariationAttributes
      */
-    public function setProductAttribute($productAttribute)
+    public function setProductAttribute(ProductAttribute $productAttribute)
     {
         $this->productAttribute = $productAttribute;
 
@@ -75,7 +75,7 @@ class VariationAttributes
     /**
      * Get productAttribute
      *
-     * @return \stdClass
+     * @return ProductAttribute
      */
     public function getProductAttribute()
     {

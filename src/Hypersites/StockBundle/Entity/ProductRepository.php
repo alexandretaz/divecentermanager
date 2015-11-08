@@ -10,4 +10,14 @@ namespace Hypersites\StockBundle\Entity;
  */
 class ProductRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAll() {
+        $baseQuery = "Select p from Product p";
+        $query = $this->createQueryBuilder("p")
+                ->setFirstResult(0)
+                ->setMaxResults(15)
+                ->getQuery();
+        
+                
+        return $paginator = new \Doctrine\ORM\Tools\Pagination\Paginator($query);
+    }
 }

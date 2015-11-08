@@ -1,9 +1,23 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Product list</h1>
-
-    <table class="records_list">
+    <h1>Product List</h1>
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="exampleInputName2">Product</label>
+            <input type="text" class="form-control" id="exampleInputName2" placeholder="Type the product name   ">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail2">Supplier or Brand</label>
+            <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Type The Suplier or Brand">
+        </div>
+        <button type="submit" class="btn btn-default">Filter (not working yet)</button>
+    </form>
+    <form class="form-inline" action="{{ path('stock_product_new') }}">
+        <button type="submit" class="btn btn-info">Add a new Product</button>
+    </fom>
+    
+    <table class="records_list table table-bordered table-responsive table-hover">
         <thead>
             <tr>
                 <th>Id</th>
@@ -11,8 +25,6 @@
                 <th>Mincost</th>
                 <th>Maxcost</th>
                 <th>Supplierean</th>
-                <th>Description</th>
-                <th>Contents</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -24,8 +36,6 @@
                 <td>{{ entity.minCost }}</td>
                 <td>{{ entity.maxCost }}</td>
                 <td>{{ entity.supplierEan }}</td>
-                <td>{{ entity.description }}</td>
-                <td>{{ entity.contents }}</td>
                 <td>
                 <ul>
                     <li>

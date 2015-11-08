@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Hypersites\StockBundle\Entity\Product;
 use Hypersites\StockBundle\Form\ProductType;
+use Hypersites\StockBundle\Model\Variation\VariationFactory;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * Product controller.
@@ -30,7 +32,6 @@ class ProductController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('HypersitesStockBundle:Product')->findAll();
-
         return array(
             'entities' => $entities,
         );
@@ -57,7 +58,7 @@ class ProductController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('stock_product_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('supplier_product_attribute', array('product' => $entity->getId())));
         }
 
         return array(
@@ -158,7 +159,7 @@ class ProductController extends Controller
       /**
      * Displays a form to edit an existing Product entity.
      *
-     * @Route("/{id}/variation/generate", name="stock_product_edit")
+     * @Route("/{id}/variation/generate", name="stock_product_variation_generate")
      * @Method("GET")
      * @Template("HypersitesStockBundle:Product:index.html.twig")
      */
@@ -166,34 +167,7 @@ class ProductController extends Controller
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('HypersitesStockBundle:Product')->find($id);
         $attributes = $entity->getAttributes();
-        $variationsToProcess = [];
-        foreach( $attributes as $attribute) {
-            $key = 0;
-            foreach($attribute->getAttributeValue() as $value) {
-                if(!isset($variationsToProcess[$key])){
-                    $variationAttr = new \Hypersites\StockBundle\Entity\VariationAttributes();
-                    $variation = new \Hypersites\StockBundle\Entity\ProductVariation();
-                    $variation->setProduct($entity);
-                    $variation->setMinCost($entity->getMinCost());
-                    $variation->setMaxCost($entity->getMaxCost());
-                    $variationAttr->setProductAttribute($attribute);
-                    $variationAttr->setAttributeValue($value);
-                    $variationsToProcess[$key++] = $variation->addVariationAttributes($variationAttr);
-                    $variationAttr->addProductVariation($variation);
-                    
-                }
-                else {
-                    $variationsToProcess[$key++]->addVariationAttributes($variationAttr);
-                    $variationAttr->addProductVariation($variation);
-                }
-                $em->persist($variationAttr);
-                $em->persist($variation);
-            }
-            
-        }
-        $em->flush();
-        die();
-        
+        $variations = VariationFactory::generate($em, $entity);
         return $this->redirect($this->generateUrl('stock_product_show', array('id' => $id)));
         
     }

@@ -185,6 +185,17 @@ class ProductVariation
         $this->variationAttributes->add($attribute);
         return $this;
     }
+    
+    public function __toString() {
+        
+        $stringOutput = $this->product->getName();
+        foreach ($this->variationAttributes as $attr) {
+            $stringOutput.=' '.$attr->getProductAttribute()->getAttributeName().' : '.$attr->getAttributeValue();
+        }
+         return $stringOutput;
+        
+        
+    }
 
 
 }
