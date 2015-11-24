@@ -69,7 +69,7 @@
                         </div>
                     </td>
                     <td> 
-                        <button class="btn btn-warning" id="product_variation_inner_operations"> Internal Operations</button>
+                        <button class="btn btn-warning btn-inner-ops" data-toggle="modal" data-target="#myModal" data-variation="{{variation.id}}"> Internal Operations</button>
                         <button class="btn btn-info" id="product_variation_buy">Buy</button>
                         <button class="btn btn-success" id="product_variation_sell">Sell</button>
                         <button class="btn btn-default" id="product_variation_service">Send to service</button>
@@ -86,6 +86,22 @@
         </a>
     </li>
 </ul>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         </div>
+        <div class="modal-body" id="product_modal_body">
+            
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 {% block jqueryScript %}
     <script>   
@@ -97,8 +113,12 @@
             divInfo = cell.children(".infoVariationStock")[0].innerHTML = data.qtyStock;
             cell.find(".formVariationStock").toggleClass("hiddenElement");
             cell.find(".infoVariationStock").toggleClass("hiddenElement");
-        })
+        });
+        $('.btn-inner-ops').on('click', function () {
             
+            Product.getInternalOperationsForm($(this).attr('data-variation'));
+            $("#myModal").modal('toogle');
+        })
     });
     </script>
 {% endblock %}

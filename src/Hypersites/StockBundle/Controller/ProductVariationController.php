@@ -14,16 +14,14 @@ use Hypersites\StockBundle\Entity\Item;
 class ProductVariationController extends Controller
 {
     /**
-     * @Route("/stock/variation/updateStockItem")
+     * @Route("/stock/api/variation/{id}")
      * @Method("GET")
-     * @Template()
+     * @Template("HypersitesStockBundle:ProductVariation:internal_use_form.html.twig")
      */
-    public function updateStockItemsAction()
-    {
-        return array(
-                // ...
-            );    
-        
+    public function internalOperations($id){
+        $em = $this->getDoctrine()->getManager();
+        $variation = $em->getRepository('HypersitesStockBundle:ProductVariation')->find($id);
+        return array('variation' => $variation);
     }
     /**
      * @Route("/stock/api/variation/update/qty")

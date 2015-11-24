@@ -1,0 +1,19 @@
+<h2 class="text-primary bg-info">{{"Internal user Items Transfer"|trans}}</h2>
+<div class="panel panel-warning">
+    <h3 class='text-warning'>{{ variation.product.name }}</h3>
+    <p class='text-warning'>{{ variation.product.description }} </p>
+        {% for attribute in variation.variationAttributes %}
+            <li>{{attribute.productAttribute.attributeName}}:{{attribute.attributeValue}}</li>
+        {% endfor %}
+</div>
+    <form class="form-inline" id="internal_use_stock_form">
+        <div class="form-group">
+            <label class="sr-only" for="quatity_internal_use">Number of Items</label>
+            <div class="input-group">
+               <input type="hidden" name="id" value="{{variation.id}}" />
+               <input type="text" class="form-control" name="qtyToChange" placeholder="Number of Itens">
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary">Transfer Item to Operational to Internal Use</button>
+    </form>
+

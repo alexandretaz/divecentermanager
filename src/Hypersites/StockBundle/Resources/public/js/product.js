@@ -14,4 +14,10 @@ var Product = {
         $(obj).find(".formVariationStock").toggleClass("hiddenElement");
         $(obj).find(".infoVariationStock").toggleClass("hiddenElement");
    },
+   getInternalOperationsForm:function(id) {
+       $.get("/stock/api/variation/"+id, function( data ) {
+           $("#product_modal_body").html(data);
+       })
+       return;
+   }
 }
