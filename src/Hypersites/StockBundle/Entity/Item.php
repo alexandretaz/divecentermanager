@@ -13,6 +13,19 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Item
 {
+    const ON_STOCK = 1;
+    
+    const ON_INTERNAL_USE = 2;
+    
+    const SOLD = 3;
+    
+    const SENT_TO_SERVICE = 4;
+    
+    const RETURNED_BY_CUSTOMER = 5;
+    
+    const RENTED = 6;
+    
+    const LOST = 7;
     /**
      * @var integer
      *
@@ -32,7 +45,7 @@ class Item
     /**
      * @var string
      *
-     * @ORM\Column(name="serial", type="string", length=255)
+     * @ORM\Column(name="serial", type="string", length=255, nullable=true)
      */
     private $serial;
 
@@ -65,6 +78,9 @@ class Item
     
     public function __construct() {
         $this->movements = new ArrayCollection() ;
+        $this->addedToStock =  new \DateTime();
+        $this->lastMoved = clone $this->addedToStock;
+        $this->setStatus(self::ON_STOCK);
     }
 
 

@@ -34,4 +34,7 @@ div.form-group>input,textarea {
 div.form-group {
     margin-bottom: 5px;
 }
+div.hiddenElement {
+    visibility: hidden;
+}
 

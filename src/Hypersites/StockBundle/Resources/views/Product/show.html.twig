@@ -58,7 +58,16 @@
                     {% for variationAttribute in variation.variationAttributes %}
                         <td> {{variationAttribute.attributeValue}} </td>
                     {% endfor %}
-                    <td>{{variation.qtyStock}}</td>
+                    <td class="cellstock"><div class="infoVariationStock">{{variation.qtyStock}}</div>
+                        <div class="formVariationStock hiddenElement">
+                            <form>
+                                <input type="hidden" name="id" value="{{variation.id}}" />
+                                <input type="text" name="qtyStock" value="{{variation.qtyStock}}" />
+                                <button type="button" class="btn btn-primary stock_update_button">Update</button>
+                                
+                            </form>
+                        </div>
+                    </td>
                     <td> 
                         <button class="btn btn-warning" id="product_variation_inner_operations"> Internal Operations</button>
                         <button class="btn btn-info" id="product_variation_buy">Buy</button>
@@ -77,4 +86,19 @@
         </a>
     </li>
 </ul>
+{% endblock %}
+{% block jqueryScript %}
+    <script>   
+    $(document).ready(function(){
+        $('.cellstock').on("dblclick",function(){Product.onClickVariationTd(this)});
+        $('.stock_update_button').on("click", function(){
+            Product.updateStockItens($(this).parent());
+            var cell = $(this).parent().parent().parent();
+            divInfo = cell.children(".infoVariationStock")[0].innerHTML = data.qtyStock;
+            cell.find(".formVariationStock").toggleClass("hiddenElement");
+            cell.find(".infoVariationStock").toggleClass("hiddenElement");
+        })
+            
+    });
+    </script>
 {% endblock %}
