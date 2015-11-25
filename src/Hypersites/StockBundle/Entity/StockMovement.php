@@ -13,11 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 class StockMovement
 {
     
-    const ENTERED_FROM_SUPPLIER = 1;
+    const RECEIVED_FROM_SUPPLIER = 1;
     const SELLED = 2;
     const RETURNED_BY_CUSTOMER = 3;
     const RETURNED_TO_SUPPLIER = 4;
     const INTERNAL_USE = 5;
+    const RENT = 6;
     
     /**
      * @var integer

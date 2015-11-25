@@ -2,6 +2,8 @@
 
 namespace Hypersites\StockBundle\Entity;
 
+use Hypersites\StockBundle\Entity\Item;
+use Hypersites\StockBundle\Entity\ProductVariation;
 /**
  * ItemRepository
  *
@@ -10,4 +12,18 @@ namespace Hypersites\StockBundle\Entity;
  */
 class ItemRepository extends \Doctrine\ORM\EntityRepository
 {
+    
+    public function getPossibleForInternalUse(ProductVariation $productVariation) {
+      $statusToInternalUse = array(
+        Item::ON_STOCK,
+        Item::RETURNED_BY_CUSTOMER,
+      );
+      $query = $this->createQueryBuilder("i")
+              ->where("i.status IN(:status)")
+              ->andWhere("i.productVariation = :productVariation")
+              ->setParameter("status", $statusToInternalUse)
+              ->setParameter("productVariation", $productVariation)
+              ->getQuery();
+      return $query->getResult();
+    }
 }

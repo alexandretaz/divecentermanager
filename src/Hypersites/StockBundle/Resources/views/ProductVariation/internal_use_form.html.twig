@@ -10,6 +10,9 @@
     </ul>
         
 </div>
+    {% if form is defined %}
+    {{ form(form) }}    
+    {% else %}
     <form class="form-inline" id="internal_use_stock_form">
         <div class="form-group">
             <label class="sr-only" for="quatity_internal_use">Number of Items</label>
@@ -20,4 +23,5 @@
         </div>
         <button type="button" class="btn btn-primary">Transfer Item to Operational to Internal Use</button>
     </form>
+    {% endif %}
 
