@@ -2,9 +2,13 @@
 <div class="panel panel-warning">
     <h3 class='text-warning'>{{ variation.product.name }}</h3>
     <p class='text-warning'>{{ variation.product.description }} </p>
+    <ul>
         {% for attribute in variation.variationAttributes %}
             <li>{{attribute.productAttribute.attributeName}}:{{attribute.attributeValue}}</li>
         {% endfor %}
+        <li>{{ "Available Items"|trans }}: {{ availableItems|length }}
+    </ul>
+        
 </div>
     <form class="form-inline" id="internal_use_stock_form">
         <div class="form-group">

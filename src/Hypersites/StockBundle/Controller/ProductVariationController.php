@@ -21,7 +21,13 @@ class ProductVariationController extends Controller
     public function internalOperations($id){
         $em = $this->getDoctrine()->getManager();
         $variation = $em->getRepository('HypersitesStockBundle:ProductVariation')->find($id);
-        return array('variation' => $variation);
+        $availableItems = $em->getRepository('HypersitesStockBundle:Item')->findBy(array(
+           'productVariation'=>$id,
+           'status' => Item::ON_STOCK
+        ));
+        return array('variation' => $variation,
+                'availableItems' => $availableItems
+        );
     }
     /**
      * @Route("/stock/api/variation/update/qty")
